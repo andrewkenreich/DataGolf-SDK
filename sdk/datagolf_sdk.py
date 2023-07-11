@@ -32,8 +32,10 @@ class DataGolfSDK:
         print(url)
         response = requests.get(url, params=params)
 
-        if response.status_code == 200:
+        if response.status_code == 200 and params["file_format"] == "json":
             return response.json()
+        if response.status_code == 200 and params["file_format"] == "csv":
+            return response.text
         else:
             # Handle error cases here
             print(

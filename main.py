@@ -13,4 +13,6 @@ dg = DataGolfSDK(api_token)
 
 # get all field updates for pga
 my = dg.get_field_updates("pga")
-print(my)
+
+# get all field updates for pga in csv format
+my = dg.get_field_updates("pga", "csv")
