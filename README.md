@@ -24,7 +24,6 @@ The main.py file has a basic usage for the sdk.
 
 # TODOs
 
-add types to the params
 more examples
 make it a pip package might be cool
 test/create tests for all endpoints to ensure that they work

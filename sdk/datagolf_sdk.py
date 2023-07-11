@@ -12,6 +12,7 @@ class DataGolfSDK:
         """
         self.base_url = "https://feeds.datagolf.com"
         self.api_token = api_token
+        self.file_format = "json"
 
     def make_request(self, endpoint, params=None):
         """
@@ -46,7 +47,7 @@ class DataGolfSDK:
             )
             return None
 
-    def get_player_list(self, file_format="json"):
+    def get_player_list(self, file_format=None):
         """
         Get the list of players who have played on a major tour since 2018 or are playing this week.
 
@@ -57,10 +58,10 @@ class DataGolfSDK:
             dict or None: The player list or None if an error occurred.
         """
         endpoint = f"get-player-list"
-        params = {"file_format": file_format}
+        params = {"file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
-    def get_tour_schedules(self, tour, file_format="json"):
+    def get_tour_schedules(self, tour, file_format=None):
         """
         Get the current season schedules for primary tours.
 
@@ -72,10 +73,10 @@ class DataGolfSDK:
             dict or None: The tour schedules or None if an error occurred.
         """
         endpoint = f"get-schedule"
-        params = {"tour": tour, "file_format": file_format}
+        params = {"tour": tour, "file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
-    def get_field_updates(self, tour, file_format="json"):
+    def get_field_updates(self, tour: str, file_format=None):
         """
         Get up-to-the-minute field updates for tour events.
 
@@ -87,10 +88,10 @@ class DataGolfSDK:
             dict or None: The field updates or None if an error occurred.
         """
         endpoint = f"field-updates"
-        params = {"tour": tour, "file_format": file_format}
+        params = {"tour": tour, "file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
-    def get_dg_rankings(self, file_format="json"):
+    def get_dg_rankings(self, file_format=None):
         """
         Returns the top 500 players in the current DG rankings, along with each player's skill estimate and respective OWGR rank.
 
@@ -101,11 +102,11 @@ class DataGolfSDK:
             dict or None: The field updates or None if an error occurred.
         """
         endpoint = f"preds/get-dg-rankings"
-        params = {"file_format": file_format}
+        params = {"file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
     def get_pre_tournament_predictions(
-        self, tour, add_position, odds_format, file_format="json"
+        self, tour: str, add_position: str, odds_format: str, file_format=None
     ):
         """
         Returns full-field probabilistic forecasts for the upcoming tournament on PGA, European, and Korn Ferry Tours from both our baseline and baseline + course history & fit models. Probabilities provided for various finish positions (make cut, top 20, top 5, win, etc.).
@@ -124,19 +125,19 @@ class DataGolfSDK:
             "tour": tour,
             "add_position": add_position,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
     def get_pre_tournament_predictions_archive(
-        self, event_id, year, odds_format, file_format="json"
+        self, event_id: str, year: int, odds_format: str, file_format=None
     ):
         """
         Historical archive of our PGA Tour pre-tournament predictions.
 
         Args:
             event_id (str): The desired event id.
-            year (str): The desired year.
+            year (int): The desired year (format - YYYY)
             odds_format (str): The desired odds format - american (default), decimal, fractional.
             file_format (str, optional): The desired file format of the response. Defaults to 'json' , csv.
 
@@ -148,11 +149,11 @@ class DataGolfSDK:
             "event_id": event_id,
             "year": year,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_player_skill_decompositions(self, tour, file_format="json"):
+    def get_player_skill_decompositions(self, tour: str, file_format=None):
         """
         Returns a detailed breakdown of every player's strokes-gained prediction for upcoming PGA and European Tour tournaments.
 
@@ -164,10 +165,10 @@ class DataGolfSDK:
             dict or None: The field updates or None if an error occurred.
         """
         endpoint = f"preds/player-decompositions"
-        params = {"tour": tour, "file_format": file_format}
+        params = {"tour": tour, "file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
-    def get_player_skill_ratings(self, display, file_format="json"):
+    def get_player_skill_ratings(self, display: str, file_format=None):
         """
         Returns our estimate and rank for each skill for all players with sufficient Shotlink measured rounds (at least 30 rounds in the last year or 50 in the last 2 years).
 
@@ -179,10 +180,10 @@ class DataGolfSDK:
             dict or None: The field updates or None if an error occurred.
         """
         endpoint = f"preds/skill-ratings"
-        params = {"display": display, "file_format": file_format}
+        params = {"display": display, "file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
-    def get_detailed_approach_skill(self, period, file_format="json"):
+    def get_detailed_approach_skill(self, period: str, file_format=None):
         """
         Returns detailed player-level approach performance stats (strokes-gained per shot, proximity, GIR, good shot rate, poor shot avoidance rate) across various yardage/lie buckets.
 
@@ -194,10 +195,12 @@ class DataGolfSDK:
             dict or None: The field updates or None if an error occurred.
         """
         endpoint = f"preds/approach-skill"
-        params = {"period": period, "file_format": file_format}
+        params = {"period": period, "file_format": file_format or self.file_format}
         return self.make_request(endpoint, params)
 
-    def get_fanatasy_projection_defaults(self, tour, site, slate, file_format="json"):
+    def get_fanatasy_projection_defaults(
+        self, tour: str, site: str, slate: str, file_format=None
+    ):
         """
         Returns our default fantasy projections for main, showdown, late showdown, weekend, and captain mode contests at Draftkings, Fanduel, and Yahoo. Currently, Fanduel and Yahoo projections are only provided for main contests.
 
@@ -215,12 +218,12 @@ class DataGolfSDK:
             "tour": tour,
             "site": site,
             "slate": slate,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
     def get_live_model_predictions(
-        self, tour, dead_heat, odds_format, file_format="json"
+        self, tour: str, dead_heat: str, odds_format: str, file_format=None
     ):
         """
         Returns live (updating at 5 minute intervals) finish probabilities for ongoing PGA and European Tour tournaments.
@@ -239,17 +242,19 @@ class DataGolfSDK:
             "tour": tour,
             "dead_heat": dead_heat,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_live_tournament_stats(self, stats, round, display, file_format="json"):
+    def get_live_tournament_stats(
+        self, stats: list, round: int, display: str, file_format=None
+    ):
         """
         Returns live strokes-gained and traditional stats for every player during PGA Tour tournaments.
 
         Args:
-            stats (str): Comma-separated list of statistics to be returned.
-            round (str): Specifies the round.
+            stats (list): Comma-separated list of statistics to be returned. (sg_putt, sg_arg, sg_app, sg_ott, sg_t2g, sg_bs, sg_total, distance, accuracy, gir, prox_fw, prox_rgh, scrambling)
+            round (int): Specifies the round.
             display (str): Specifies how stats are displayed.
             file_format (str, optional): The desired file format of the response. Defaults to 'json' , csv.
 
@@ -261,11 +266,11 @@ class DataGolfSDK:
             "stats": stats,
             "round": round,
             "display": display,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_live_hole_scoring_distribution(self, tour, file_format="json"):
+    def get_live_hole_scoring_distribution(self, tour: str, file_format=None):
         """
         Returns live hole scoring averages and distrubutions (birdies, pars, bogeys, etc.) broken down by tee time wave.
 
@@ -279,11 +284,13 @@ class DataGolfSDK:
         endpoint = f"preds/live-hole-stats"
         params = {
             "tour": tour,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_outright_odds(self, tour, market, odds_format, file_format="json"):
+    def get_outright_odds(
+        self, tour: str, market: str, odds_format: str, file_format=None
+    ):
         """
         Returns the most recent win, top 5, top 10, top 20, make/miss cut, and first round leader odds offered at 11 sportsbooks alongside the corresponding predictions from our model.
 
@@ -301,11 +308,13 @@ class DataGolfSDK:
             "tour": tour,
             "market": market,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_matchup_odds(self, tour, market, odds_format, file_format="json"):
+    def get_matchup_odds(
+        self, tour: str, market: str, odds_format: str, file_format=None
+    ):
         """
         Returns the most recent tournament match-up, round match-up, and 3-ball odds offered at 8 sportsbooks alongside the corresponding prediction from our model.
 
@@ -323,12 +332,12 @@ class DataGolfSDK:
             "tour": tour,
             "market": market,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
     def get_matchup_odds_all_pairings(
-        self, tour, market, odds_format, file_format="json"
+        self, tour: str, market: str, odds_format: str, file_format=None
     ):
         """
         Returns the most recent tournament match-up, round match-up, and 3-ball odds offered at 8 sportsbooks alongside the corresponding prediction from our model.
@@ -347,11 +356,11 @@ class DataGolfSDK:
             "tour": tour,
             "market": market,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_historical_odds_data_event_ids(self, tour, file_format="json"):
+    def get_historical_odds_data_event_ids(self, tour: str, file_format=None):
         """
         Returns the list of tournaments (and corresponding IDs) that are available through the historical odds/predictions endpoints. Use this endpoint to fill the event_id and year query parameters in the Archived Predictions, Historical Outrights, and Historical Matchups & 3-Balls endpoints.
 
@@ -365,19 +374,19 @@ class DataGolfSDK:
         endpoint = f"historical-odds/event-list"
         params = {
             "tour": tour,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
     def get_historical_outrights(
-        self,
-        tour,
-        event_id,
-        year,
-        market,
-        book,
-        odds_format,
-        file_format="json",
+        self: str,
+        tour: str,
+        event_id: str,
+        year: int,
+        market: str,
+        book: str,
+        odds_format: str,
+        file_format=None,
     ):
         """
         Returns opening and closing lines in various markets (win, top 5, make cut, etc.) at 11 sportsbooks. Bet outcomes also included.
@@ -385,7 +394,7 @@ class DataGolfSDK:
         Args:
             tour (str): Specifies the tour. pga (default), euro, alt
             event_id (str): Specifies the event.
-            year (str): Specifies the calendar year (not season) of the event. 2019, 2020, 2021, 2022, 2023 (default)
+            year (int): Specifies the calendar year (not season) of the event. 2019, 2020, 2021, 2022, 2023 (default)
             market (str): Specifies the market/finish position.
             book (str): Specifies the bookmaker.
             odds_format (str): Specifies the odds format.
@@ -402,18 +411,18 @@ class DataGolfSDK:
             "market": market,
             "book": book,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
     def get_historical_matchups_3balls(
         self,
-        tour,
-        event_id,
-        year,
-        book,
-        odds_format,
-        file_format="json",
+        tour: str,
+        event_id: str,
+        year: int,
+        book: str,
+        odds_format: str,
+        file_format=None,
     ):
         """
         Returns opening and closing lines for tournament match-ups, round match-ups, and 3-balls at 12 sportsbooks. Bet outcomes also included.
@@ -421,7 +430,7 @@ class DataGolfSDK:
         Args:
             tour (str): Specifies the tour. pga (default), euro, alt
             event_id (str): Specifies the event.
-            year (str): Specifies the calendar year (not season) of the event. 2019, 2020, 2021, 2022, 2023 (default)
+            year (int): Specifies the calendar year (not season) of the event. 2019, 2020, 2021, 2022, 2023 (default)
             book (str): Specifies the bookmaker.
             odds_format (str): Specifies the odds format.
             file_format (str, optional): The desired file format of the response. Defaults to 'json' , csv.
@@ -436,11 +445,11 @@ class DataGolfSDK:
             "year": year,
             "book": book,
             "odds_format": odds_format,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
-    def get_historical_dfs_data_event_ids(self, file_format="json"):
+    def get_historical_dfs_data_event_ids(self, file_format=None):
         """
         Returns the list of tournaments (and corresponding IDs) that are available through the historical DFS data API endpoint. Use this endpoint to fill the event_id and year query parameters in the DFS Points endpoint.
 
@@ -452,12 +461,18 @@ class DataGolfSDK:
         """
         endpoint = f"historical-dfs-data/event-list"
         params = {
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
 
     def get_dfs_points_salaries(
-        self, tour, site, event_id, year, market, file_format="json"
+        self,
+        tour: str,
+        site: str,
+        event_id: str,
+        year: int,
+        market: str,
+        file_format=None,
     ):
         """
         Returns salaries and ownerships alongside event-level finish, hole, and bonus scoring for PGA and European Tour events.
@@ -480,6 +495,6 @@ class DataGolfSDK:
             "event_id": event_id,
             "year": year,
             "market": market,
-            "file_format": file_format,
+            "file_format": file_format or self.file_format,
         }
         return self.make_request(endpoint, params)
