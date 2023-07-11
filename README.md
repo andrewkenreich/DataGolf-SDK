@@ -17,6 +17,10 @@ pip install requests
 Create a .env file with your apikey in the root -
 apikey = "key here"
 
+# Usage and Examples
+
+The main.py file has a basic usage for the sdk.
+
 # License
 
 MIT
