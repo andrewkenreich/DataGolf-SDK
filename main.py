@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).parent.joinpath(".env").as_posix())
 
+# or paste it in "YOUR_API_TOKEN" below if you dont want to create a .env file
 api_token = os.environ.get("apikey", "YOUR_API_TOKEN")
 
 dg = DataGolfSDK(api_token)
