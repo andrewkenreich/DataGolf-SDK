@@ -106,14 +106,18 @@ class DataGolfSDK:
         return self.make_request(endpoint, params)
 
     def get_pre_tournament_predictions(
-        self, tour: str, add_position: str, odds_format: str, file_format=None
+        self,
+        tour: str,
+        odds_format: str = None,
+        add_position: str = None,
+        file_format=None,
     ):
         """
         Returns full-field probabilistic forecasts for the upcoming tournament on PGA, European, and Korn Ferry Tours from both our baseline and baseline + course history & fit models. Probabilities provided for various finish positions (make cut, top 20, top 5, win, etc.).
 
         Args:
             tour (str): The desired tour - pga (default), euro, kft, opp, alt.
-            add_position (str): Whether to add position to the output - yes (default), no.
+            add_position (str):Comma-separated list of additional positions to include in output. Defaults are win, top 5, top 10, top 20, make cut. Options : 1, 2, 3 .... 48, 49, 50
             odds_format (str): The desired odds format - american (default), decimal, fractional.
             file_format (str, optional): The desired file format of the response. Defaults to 'json' , csv.
 
@@ -130,7 +134,7 @@ class DataGolfSDK:
         return self.make_request(endpoint, params)
 
     def get_pre_tournament_predictions_archive(
-        self, event_id: str, year: int, odds_format: str, file_format=None
+        self, event_id: str, year: int, odds_format: str = None, file_format=None
     ):
         """
         Historical archive of our PGA Tour pre-tournament predictions.
@@ -223,7 +227,7 @@ class DataGolfSDK:
         return self.make_request(endpoint, params)
 
     def get_live_model_predictions(
-        self, tour: str, dead_heat: str, odds_format: str, file_format=None
+        self, tour: str, dead_heat: str, odds_format: str = None, file_format=None
     ):
         """
         Returns live (updating at 5 minute intervals) finish probabilities for ongoing PGA and European Tour tournaments.
@@ -289,7 +293,7 @@ class DataGolfSDK:
         return self.make_request(endpoint, params)
 
     def get_outright_odds(
-        self, tour: str, market: str, odds_format: str, file_format=None
+        self, tour: str, market: str, odds_format: str = None, file_format=None
     ):
         """
         Returns the most recent win, top 5, top 10, top 20, make/miss cut, and first round leader odds offered at 11 sportsbooks alongside the corresponding predictions from our model.
@@ -313,7 +317,7 @@ class DataGolfSDK:
         return self.make_request(endpoint, params)
 
     def get_matchup_odds(
-        self, tour: str, market: str, odds_format: str, file_format=None
+        self, tour: str, market: str, odds_format: str = None, file_format=None
     ):
         """
         Returns the most recent tournament match-up, round match-up, and 3-ball odds offered at 8 sportsbooks alongside the corresponding prediction from our model.
@@ -337,7 +341,7 @@ class DataGolfSDK:
         return self.make_request(endpoint, params)
 
     def get_matchup_odds_all_pairings(
-        self, tour: str, market: str, odds_format: str, file_format=None
+        self, tour: str, market: str, odds_format: str = None, file_format=None
     ):
         """
         Returns the most recent tournament match-up, round match-up, and 3-ball odds offered at 8 sportsbooks alongside the corresponding prediction from our model.
@@ -385,7 +389,7 @@ class DataGolfSDK:
         year: int,
         market: str,
         book: str,
-        odds_format: str,
+        odds_format: str = None,
         file_format=None,
     ):
         """
@@ -421,7 +425,7 @@ class DataGolfSDK:
         event_id: str,
         year: int,
         book: str,
-        odds_format: str,
+        odds_format: str = None,
         file_format=None,
     ):
         """
